@@ -1,0 +1,13 @@
+firebase init hosting (defaults)
+firebase init functions (defaults)
+
+
+--- inside functions folder ---
+npm init -y
+npm i express cors
+-------
+
+
+nodemon . to start on localhost:3004
+
+api built for a post, get, and patch request to database
