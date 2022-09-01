@@ -7,8 +7,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.listen(3004, () => {console.log('port 4000')})
-
 
 app.get('/projects/:userId', getProjects)
 app.post('/add-project/:userId/:projectId', addProject)
