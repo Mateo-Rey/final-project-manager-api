@@ -1,3 +1,4 @@
+import { QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { dbConnect } from "./dbConnect.js";
 
 const db = dbConnect();
@@ -10,13 +11,13 @@ export const getProjects = (req, res) => {
   const userId = req.params.userId;
 
   db.collection("projects")
-    .where("userId", "==", `${userId}`)
-    .get()
-    .then((collection) => {
-      const projects = collection.docs.map((doc) => doc.data());
-      res.send(projects);
-    })
-    .catch((err) => handleError(err, res));
+  .where("userId", "==", `${userId}`)
+  .get()
+  .then((collection) => {
+    const projects = collection.docs.map((doc) => doc.data());
+    res.send(projects);
+  })
+  .catch((err) => handleError(err, res));
 };
 
 export const addProject = (req, res) => {
@@ -33,6 +34,17 @@ export const addProject = (req, res) => {
       });
     })
     .catch((err) => handleError(err, res));
+};
+
+export const getAllProjectId = (req, res) => {
+  const userId = req.params.userId;
+  db.collection("projects")
+    .where('userId', '==', `${userId}`)
+    .get()
+    .then((collection) => {
+      const idList = collection.docs.map((doc) => doc.id)
+      res.send(idList)
+    })
 };
 
 export const getOneProject = (req, res) => {
@@ -57,20 +69,22 @@ export const updateProject = async (req, res) => {
   const userId = req.params.userId;
   const projectId = req.params.projectId;
   const update = req.body;
-  let document = ''
+  let document = "";
 
   const docRef = db.collection("projects").doc(projectId);
 
   await docRef.get().then((doc) => {
-    document = doc.data()
-  })
-  console.log(document)
+    document = doc.data();
+  });
+  console.log(document);
   if (document.userId !== userId) {
     res.status(400).send("Incorrect User, Search for a different project.");
   } else {
-
-    await docRef.set(update, { merge: true }).then(res.status(200).send("Project Updated")).catch((err) => {
-      console.log(err);
-    });
+    await docRef
+      .set(update, { merge: true })
+      .then(res.status(200).send("Project Updated"))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 };
