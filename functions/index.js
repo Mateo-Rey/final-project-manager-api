@@ -1,7 +1,7 @@
 import express from 'express';
 import functions from 'firebase-functions'
 import cors from 'cors';
-import { addProject, getProjects, updateProject , getOneProject, getAllProjectId } from './functions.js';
+import { addProject, getProjects, updateProject , deleteProject, getOneProject, getAllProjectId } from './functions.js';
 
 const app = express()
 app.use(cors())
@@ -14,4 +14,5 @@ app.get('/projects/:userId/:projectId', getOneProject)
 app.get('/projectIds/:userId', getAllProjectId)
 app.post('/add-project/:userId', addProject)
 app.put('/update-project/:userId/:projectId', updateProject)
+app.delete('/delete-project/:projectId', deleteProject)
 export const api = functions.https.onRequest(app)

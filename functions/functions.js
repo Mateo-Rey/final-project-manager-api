@@ -47,6 +47,16 @@ export const getAllProjectId = (req, res) => {
     })
 };
 
+export const deleteProject = (req, res) => {
+  
+  const projectId = req.params.projectId
+  db.collection('projects').doc(projectId)
+  .delete()
+  .then(res.status(200).send('Document deleted'))
+  .catch((error) => res.status(500).send(error))
+
+}
+
 export const getOneProject = (req, res) => {
   const userId = req.params.userId;
   const projectId = req.params.projectId;
